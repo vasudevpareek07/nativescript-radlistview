@@ -1,0 +1,84 @@
+
+<ActionBar
+    title="Demo"
+>
+</ActionBar>
+<StackLayout>
+
+    <Tabs 
+        selectedIndex="{{ selectedSegment }}"
+        (selectedIndexChanged)="selectedIndexChanged($event)">
+
+        <!-- The bottom tab UI is created via TabStrip (the containier) and TabStripItem (for each tab)-->
+        <TabStrip>
+            <TabStripItem>
+                <Label text="Home"></Label>
+            </TabStripItem>
+            <TabStripItem class="special">
+                <Label text="Account"></Label>
+            </TabStripItem>
+            <TabStripItem class="special">
+                <Label text="Search"></Label>
+            </TabStripItem>
+        </TabStrip>
+
+        <!-- The number of TabContentItem components should corespond to the number of TabStripItem components -->
+        <TabContentItem>
+            <GridLayout>
+                <ng-container *ngTemplateOutlet="radlist"></ng-container>
+            </GridLayout>
+        </TabContentItem>
+        <TabContentItem>
+            <GridLayout>
+                <ng-container *ngTemplateOutlet="radlist"></ng-container>
+            </GridLayout>
+        </TabContentItem>
+        <TabContentItem>
+            <GridLayout>
+                <ng-container *ngTemplateOutlet="radlist"></ng-container>
+            </GridLayout>
+        </TabContentItem>
+    </Tabs>
+
+
+    <ng-template #radlist>
+
+        <!-- List State -->
+        <StackLayout *ngIf="dataItems.length > 0 && !showLoader">
+            <GridLayout tkExampleTitle tkToggleNavButton>
+                <RadListView [items]="dataItems" loadOnDemandMode="Auto" (loadMoreDataRequested)="onLoadMoreItemsRequested($event)">
+                    <ng-template tkListItemTemplate let-item="item">
+                        <StackLayout class="itemTemplateStackLayout" orientation="vertical">
+                            <StackLayout class="innerOtemTemplateStackLayout" orientation="horizontal">
+                                <NSImg height="100" width="100" [src]="item.image"></NSImg>
+            
+                                <StackLayout class="labelsStackLayout" orientation="vertical">
+                                    <Label class="labelName" [text]="item.name"></Label>
+                                    <Label class="labelTitle" [text]="item.title" textWrap="true"></Label>
+                                    <Label class="labelText" [text]="item.text" textWrap="true"></Label>
+                                </StackLayout>
+                            </StackLayout>
+                        </StackLayout>
+                    </ng-template>
+            
+                </RadListView>
+            </GridLayout>
+        </StackLayout>
+
+        <!-- Empty State -->
+        <StackLayout *ngIf="dataItems.length == 0 && !showLoader">
+            <Label text="no result found"></Label>
+        </StackLayout>
+
+        <!-- Loading State -->
+        <StackLayout *ngIf="showLoader">
+            <ActivityIndicator
+                busy="true"
+                color="#0080ff"
+                width="50"
+                height="50"
+            ></ActivityIndicator>
+        </StackLayout>
+
+    </ng-template>
+</StackLayout>
